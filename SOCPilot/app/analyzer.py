@@ -11,7 +11,7 @@ import re
 import os
 from app.prompts import SYSTEM_PROMPT, build_user_prompt
 
-MODEL = "llama3.1:8b"
+MODEL = "llama3.2:3b"
 
 def get_client():
     host = os.getenv("OLLAMA_HOST", "http://localhost:11434")

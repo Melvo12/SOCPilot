@@ -20,7 +20,7 @@ def print_result(result: dict):
     console.print()
     console.print(Panel(
         f"[{color}]{severity}[/{color}]  ·  {result.get('category', 'N/A')}",
-        title="[bold]SOC Copilot — Analysis Result[/bold]",
+        title="[bold]SOCPilot — Analysis Result[/bold]",
         border_style=color,
     ))
 
@@ -35,7 +35,7 @@ def print_result(result: dict):
 
 def main():
     console.print(Panel(
-        "[bold green]SOC Copilot[/bold green] — On-Prem AI Assistant\n"
+        "[bold green]SOCPilot[/bold green] — On-Prem AI Assistant\n"
         "[dim]Type your security event. Press Enter twice to analyze. Ctrl+C to exit.[/dim]",
         border_style="green"
     ))
@@ -60,7 +60,7 @@ def main():
             print_result(result)
 
         except KeyboardInterrupt:
-            console.print("\n[dim]Exiting SOC Copilot.[/dim]")
+            console.print("\n[dim]Exiting SOCPilot.[/dim]")
             break
 
 if __name__ == "__main__":
