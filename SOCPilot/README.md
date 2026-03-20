@@ -1,4 +1,4 @@
-# 🛡️ SOC Copilot — On-Prem AI Assistant
+# 🛡️ SOCPilot — On-Prem AI Assistant
 
 An AI-powered assistant that helps SOC analysts investigate security incidents, write professional observations, and make faster decisions running entirely on your infrastructure, no cloud required.
 
