@@ -67,8 +67,8 @@ Infiltration / Lateral Movement:
 ### Example 1
 Input:
 Event Type: Failed Login
-Source IP: 192.168.9.196
-Destination IP / Target: 10.0.0.81
+Source IP: 192.168.5.167
+Destination IP / Target: 10.0.0.164
 Protocol: FTP
 Port: 21
 Flow Duration: 0.0s
@@ -94,8 +94,8 @@ Output:
 ### Example 2
 Input:
 Event Type: Failed Login
-Source IP: 192.168.6.142
-Destination IP / Target: 10.0.0.171
+Source IP: 192.168.6.159
+Destination IP / Target: 10.0.0.93
 Protocol: SSH
 Port: 22
 Flow Duration: 14.2s
@@ -121,8 +121,8 @@ Output:
 ### Example 3
 Input:
 Event Type: Port Scan
-Source IP: 192.168.9.7
-Destination IP / Target: 10.0.0.237
+Source IP: 192.168.1.87
+Destination IP / Target: 10.0.0.141
 Protocol: TCP SYN
 Port: 84
 Flow Duration: 0.0s
@@ -148,8 +148,8 @@ Output:
 ### Example 4
 Input:
 Event Type: Web Brute Force
-Source IP: 192.168.3.166
-Destination IP / Target: 10.0.0.195
+Source IP: 192.168.9.184
+Destination IP / Target: 10.0.0.92
 Protocol: HTTP
 Port: 80
 Flow Duration: 5.77s
@@ -175,8 +175,8 @@ Output:
 ### Example 5
 Input:
 Event Type: Web Attack - XSS
-Source IP: 192.168.4.162
-Destination IP / Target: 10.0.0.249
+Source IP: 192.168.5.36
+Destination IP / Target: 10.0.0.156
 Protocol: HTTP
 Port: 80
 Flow Duration: 5.47s
@@ -202,8 +202,8 @@ Output:
 ### Example 6
 Input:
 Event Type: Web Attack - SQL Injection
-Source IP: 192.168.7.7
-Destination IP / Target: 10.0.0.192
+Source IP: 192.168.10.45
+Destination IP / Target: 10.0.0.16
 Protocol: HTTP
 Port: 80
 Flow Duration: 5.01s
@@ -230,8 +230,8 @@ Output:
 ### Example 7
 Input:
 Event Type: DDoS Attack
-Source IP: 192.168.5.30
-Destination IP / Target: 10.0.0.212
+Source IP: 192.168.7.158
+Destination IP / Target: 10.0.0.227
 Protocol: TCP
 Port: 80
 Flow Duration: 8.1s
@@ -258,8 +258,8 @@ Output:
 ### Example 8
 Input:
 Event Type: DoS Attack
-Source IP: 192.168.6.31
-Destination IP / Target: 10.0.0.145
+Source IP: 192.168.4.141
+Destination IP / Target: 10.0.0.234
 Protocol: HTTP
 Port: 80
 Flow Duration: 83.51s
@@ -285,8 +285,8 @@ Output:
 ### Example 9
 Input:
 Event Type: Infiltration / Lateral Movement
-Source IP: 192.168.9.22
-Destination IP / Target: 10.0.0.126
+Source IP: 192.168.4.235
+Destination IP / Target: 10.0.0.174
 Protocol: TCP
 Port: 444
 Flow Duration: 56.54s
@@ -308,6 +308,61 @@ Output:
     "Notify incident response team \u2014 potential active compromise"
   ],
   "mitre_technique": "T1021 - Remote Services"
+}
+
+### Example 10
+Input:
+Event Type: DoS Attack
+Source IP: 192.168.8.138
+Destination IP / Target: 10.0.0.240
+Protocol: HTTP
+Port: 80
+Flow Duration: 0.0s
+Total Packets: 1
+Bytes Transferred: 8
+Additional Details: Slowloris attack keeping connections open to exhaust server
+Pattern context: This is 1 individual flow. 5,796 similar flows detected in the same capture window — indicative of an automated large-scale attack.
+
+Output:
+{
+  "severity": "CRITICAL",
+  "category": "DoS Attack - Slowloris",
+  "observation": "Slowloris is a low-bandwidth denial of service attack that keeps HTTP connections open by sending partial requests, exhausting the server connection pool without generating high traffic volume. Despite the low packet count per flow, thousands of simultaneous slow connections will render the web server unresponsive to legitimate users.",
+  "actions": [
+    "Enable connection timeout limits on the web server immediately",
+    "Block source IP at the firewall",
+    "Implement rate limiting on concurrent connections per IP",
+    "Deploy a reverse proxy or load balancer with DoS protection"
+  ],
+  "mitre_technique": "T1499.002 - Service Exhaustion Flood"
+}
+
+### Example 11
+Input:
+Event Type: Heartbleed Exploit Attempt
+Source IP: 192.168.9.219
+Destination IP / Target: 10.0.0.124
+Protocol: TLS/SSL
+Port: 443
+Flow Duration: 119.26s
+Total Packets: 2782
+Bytes Transferred: 12264
+Additional Details: Malformed TLS heartbeat request — potential CVE-2014-0160 exploitation attempt
+Pattern context: This is 1 individual flow. 11 similar flows detected in the same capture window — indicative of an automated large-scale attack.
+
+Output:
+{
+  "severity": "CRITICAL",
+  "category": "Heartbleed Exploit - CVE-2014-0160",
+  "observation": "A malformed TLS heartbeat request was detected targeting port 443, consistent with exploitation of CVE-2014-0160 (Heartbleed). This vulnerability allows an attacker to read up to 64KB of server memory per request, potentially exposing private keys, session tokens and sensitive user data. Even a single successful exploit can result in full server compromise.",
+  "actions": [
+    "Isolate the affected server immediately",
+    "Patch OpenSSL to version 1.0.1g or later",
+    "Revoke and reissue all SSL/TLS certificates on affected servers",
+    "Invalidate all active session tokens and force password resets",
+    "Audit server memory for signs of data exposure"
+  ],
+  "mitre_technique": "T1190 - Exploit Public-Facing Application"
 }
 
 
